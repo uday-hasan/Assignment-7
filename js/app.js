@@ -1,6 +1,5 @@
-console.log(12);
 let posts = [];
-
+let count = 0;
 const likedPostsId = [];
 const reportedPostsId = [];
 
@@ -13,12 +12,16 @@ const getReportedPosts = () => {
 };
 
 const isLiked = (id) => {
+  // const likedUser = document.getElementById('liked-users').innerHTML;
   return likedPostsId?.length && !!likedPostsId.includes(id);
 };
 
 const addToLiked = (id) => {
-  likedPostsId.plus(id);
-  showPosts(posts);
+  console.log(id)
+  count ++;
+  console.log(count);
+  isLiked(id);
+  // showPosts(posts);
 };
 
 const reportPost = (id) => {
@@ -53,6 +56,7 @@ const switchTab = (id) => {
 
 const createPost = (post) => {
   const image = post.image;
+  const profileImg = post.userImage;
   const div = document.createElement("article");
   div.classList.add("post");
   div.innerHTML = `
@@ -63,7 +67,7 @@ const createPost = (post) => {
                     target="_blank"
                     class="post__avatar"
                   >
-                    <img src="${image}" alt="User Picture" />
+                    <img src="${profileImg}" alt="User Picture" />
                   </a>
                   <a href="#" class="post__user">phero</a>
                 </div>
@@ -86,7 +90,7 @@ const createPost = (post) => {
               <div class="post__footer">
                 <div class="post__buttons">
                   <button class="post__button" onclick="addToLiked(${post.id})">
-                  <i class="fa-solid fa-heart ${isLiked(post.id) && "text-danger"}"></i>
+                  <i class="fa-solid fa-heart ${isLiked(post.id) && 'text-danger'}"></i>
                     
                   </button>
                   <button class="post__button">
@@ -112,7 +116,7 @@ const createPost = (post) => {
 
                     <span>Liked by
                       <a class="post__name--underline" href="#">user123</a> and
-                      <a href="#">73 others</a></span>
+                      <a href="#"><span id='liked-users'>73</span> others</a></span>
                   </div>
 
                   <hr/>
@@ -162,6 +166,7 @@ const loadPosts = async () => {
   let data = await fetch('../data/posts.json');
   posts = await data.json();
   showPosts(posts);
+  console.log(posts);
 }
 
 loadPosts();
