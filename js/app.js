@@ -1,42 +1,36 @@
 const loadPosts = async () => {
   let data = await fetch('../data/posts.json');
   posts = await data.json();
-  getData(posts);
-  console.log(posts);
-}
-const getData = (posts) => {
-  showPosts(posts)
-  getLikedPosts(posts)
+  showPosts(posts);
 }
 
-let posts = [];
-let count = 0;
 let likedPostsId = [];
 let reportedPostsId = [];
 
-const getLikedPosts = (posts) => {
+const getLikedPosts = () => {
   console.log(posts.filter((post) => likedPostsId.includes(post.id)));
+  return posts.filter((post) => likedPostsId.includes(post.id));
 };
 
 const getReportedPosts = () => {
   return posts.filter((post) => reportedPostsId.includes(post.id));
 };
-
 const isLiked = (id) => {
-  // const likedUser = document.getElementById('liked-users').innerHTML;
-  return likedPostsId?.length && !!likedPostsId.includes(id);
+  return likedPostsId?.length && likedPostsId.includes(id);
 };
 
 const addToLiked = (id) => {
+  likedPostsId.push(id);
   isLiked(id);
-  // showPosts(posts);
+  showPosts(posts);
 };
+//Handle multiple click on same button
 
 const reportPost = (id) => {
+ 
   reportedPostsId.push(id);
   const remainingPosts = posts.filter((post) => !reportedPostsId.includes(post.id));
-  console.log(remainingPosts);
-  // showPosts(remainingPosts);
+  showPosts(remainingPosts);
 };
 
 const displayContent = (text) => {
@@ -48,20 +42,23 @@ const switchTab = (id) => {
     document.getElementById("posts").style.display = "grid";
     document.getElementById("liked").style.display = "none";
     document.getElementById("reported").style.display = "none";
-  } else if (id === "liked") {
+  } 
+  else if (id === "liked") {
     document.getElementById("liked").style.display = "block";
     document.getElementById("posts").style.display = "none";
     document.getElementById("reported").style.display = "none";
 
     displayLikedPosts();
-  } else {
+     
+  }
+  else {
     document.getElementById("reported").style.display = "block";
     document.getElementById("posts").style.display = "none";
     document.getElementById("liked").style.display = "none";
-
     displayReportedPosts();
+    
   }
-};
+}
 
 const createPost = (post) => {
   const image = post.image;
@@ -117,7 +114,7 @@ const createPost = (post) => {
                     </a>
                     <span>Liked by
                       <a class="post__name--underline" href="#">user123</a> and
-                      <a href="#"><span id='liked-users'>73</span> others</a></span>
+                      <a href="#">73 others</a>
                   </div>
                   <hr/>
                   <div class="post__description">
@@ -146,6 +143,10 @@ const showPosts = (posts) => {
 };
 
 const displayLikedPosts = () => {
+  if(reportPost()){
+    alert('Already reported');
+    return;
+  }
   const likedPosts = getLikedPosts();
   likedPosts.forEach((post) => {
     const div = createPost(post);
@@ -155,7 +156,8 @@ const displayLikedPosts = () => {
 
 const displayReportedPosts = () => {
   const reportedPosts = getReportedPosts();
-  posts.forEach((post) => {
+  console.log(reportedPosts)
+  reportedPosts.forEach((post) => {
     const div = createPost(post);
     document.getElementById("reported").appendChild(div);
   });
