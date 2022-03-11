@@ -255,3 +255,20 @@ img {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+.bonus > div{
+  border:1px solid yellowgreen;
+  margin: 5px 10px;
+  padding: 10px;
+}
+.bonus p,li{
+  font-weight: 500;
+}
+.bonus b{
+  color: blueviolet;
+}
+.bonus h3{
+  color: tomato;
+}
+.bonus .third h5{
+  color: brown;
+}
